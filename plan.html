@@ -4,28 +4,201 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Exercise Plan</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #eef2f7; color: #333; }
+        .header { background: linear-gradient(135deg, #2c7dba, #56b4d3); color: white; padding: 30px 20px; text-align: center; }
+        .header h1 { font-size: 24px; margin-bottom: 5px; }
+        .header p { opacity: 0.9; font-size: 14px; }
+        .container { max-width: 700px; margin: 0 auto; padding: 20px; }
+        .exercise-card {
+            background: white; border-radius: 12px; padding: 20px;
+            margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .exercise-card h2 { font-size: 18px; color: #2c3e50; margin-bottom: 4px; }
+        .exercise-card .code { font-size: 12px; color: #999; font-family: monospace; }
+        .exercise-card .category {
+            display: inline-block; padding: 3px 10px; border-radius: 20px;
+            font-size: 11px; font-weight: 600; color: white; margin-bottom: 10px;
+        }
+        .cat-knee { background: #e74c3c; }
+        .cat-shoulder { background: #2ecc71; }
+        .cat-back { background: #9b59b6; }
+        .cat-hip { background: #f39c12; }
+        .cat-neck { background: #1abc9c; }
+        .cat-ankle { background: #e67e22; }
+        .params { display: flex; gap: 12px; flex-wrap: wrap; margin: 12px 0; }
+        .param { background: #f0f4f8; padding: 8px 14px; border-radius: 8px; text-align: center; }
+        .param .value { font-size: 20px; font-weight: 700; color: #2c7dba; }
+        .param .label { font-size: 11px; color: #888; }
+        .instructions { font-size: 14px; color: #555; line-height: 1.6; margin-top: 10px; }
+        .instructions ol { padding-left: 20px; }
+        .instructions li { margin-bottom: 6px; }
+        .error { background: #fff5f5; border-left: 4px solid #e74c3c; padding: 20px; border-radius: 8px; margin: 20px; }
+        .error h2 { color: #c0392b; }
+        .error p { color: #e74c3c; font-size: 14px; }
+        .footer { text-align: center; padding: 20px; color: #999; font-size: 13px; border-top: 1px solid #ddd; margin-top: 20px; }
+    </style>
 </head>
 <body>
 
-    <!-- ===== HEADER ===== -->
-    <header class="site-header">
-        <h1>My Exercise Plan</h1>
-        <p class="subtitle">Prescribed exercises — follow the instructions below</p>
-    </header>
+<div class="header">
+    <h1>My Exercise Plan</h1>
+    <p>Prescribed exercises — follow the instructions below</p>
+</div>
 
-    <!-- ===== MAIN CONTENT — populated by app.js ===== -->
-    <main id="app" class="container">
-        <div id="loading" class="message-box">
-            <p>Loading your exercise plan…</p>
-        </div>
-    </main>
+<div class="container" id="content">
+    <p style="text-align:center;padding:40px;color:#999;">Loading exercises...</p>
+</div>
 
-    <!-- ===== FOOTER ===== -->
-    <footer class="site-footer">
-        <p>If you experience increased pain or have questions, contact your physiotherapy department.</p>
-    </footer>
+<div class="footer">
+    If you experience increased pain or have questions,<br>contact your physiotherapy department.
+</div>
 
-    <script src="app.js"></script>
+<script>
+var EXERCISES = {
+    k01: { name:'Quad Sets', cat:'knee', instructions:['Sit with your leg straight on a flat surface.','Tighten the muscle on top of your thigh by pushing your knee down.','Hold the squeeze, then relax.','Repeat as prescribed.'] },
+    k02: { name:'Straight Leg Raise', cat:'knee', instructions:['Lie on your back with one knee bent and the other straight.','Tighten the thigh of the straight leg.','Lift the straight leg about 30cm off the ground.','Hold briefly, then slowly lower.'] },
+    k03: { name:'Heel Slides', cat:'knee', instructions:['Lie on your back with legs straight.','Slowly bend one knee, sliding your heel toward your buttock.','Slide back to the starting position.','Keep the movement smooth and controlled.'] },
+    k04: { name:'Wall Squats', cat:'knee', instructions:['Stand with your back against a wall, feet shoulder-width apart.','Slowly slide down the wall, bending your knees.','Hold the squat position.','Slowly slide back up.'] },
+    k05: { name:'Step Ups', cat:'knee', instructions:['Stand in front of a step or low platform.','Step up with one foot, then bring the other foot up.','Step back down leading with the same foot.','Alternate the leading leg.'] },
+    k06: { name:'Terminal Knee Extension', cat:'knee', instructions:['Place a rolled towel under your knee while lying down.','Straighten your knee by lifting your foot off the surface.','Hold at full extension.','Slowly lower back down.'] },
+    k07: { name:'Hamstring Curls', cat:'knee', instructions:['Stand holding a chair for balance.','Slowly bend one knee, bringing your heel toward your buttock.','Hold briefly at the top.','Slowly lower back down.'] },
+    k08: { name:'Calf Raises', cat:'knee', instructions:['Stand with feet hip-width apart, holding a chair for balance.','Rise up onto your toes as high as possible.','Hold briefly at the top.','Slowly lower back down.'] },
+    k09: { name:'Single Leg Balance', cat:'knee', instructions:['Stand on one leg near a wall or chair for safety.','Try to maintain balance without holding on.','Keep your standing knee slightly bent.','Hold for the prescribed time, then switch legs.'] },
+    k10: { name:'Lateral Step Downs', cat:'knee', instructions:['Stand on a step with one foot near the edge.','Slowly lower the other foot toward the ground by bending the standing knee.','Lightly tap the ground, then return to starting position.','Keep your knee aligned over your toes.'] },
+
+    s01: { name:'Pendulum Exercises', cat:'shoulder', instructions:['Lean forward supporting yourself with one hand on a table.','Let your affected arm hang straight down.','Gently swing your arm in small circles.','Gradually increase the circle size as comfort allows.'] },
+    s02: { name:'Wall Walks', cat:'shoulder', instructions:['Stand facing a wall at arm\'s length.','Place your fingertips on the wall at waist height.','Slowly walk your fingers up the wall as high as comfortable.','Slowly walk your fingers back down.'] },
+    s03: { name:'External Rotation with Band', cat:'shoulder', instructions:['Hold a resistance band with both hands, elbows at your sides bent to 90°.','Keep your elbows tucked in.','Rotate your forearms outward, stretching the band.','Slowly return to the starting position.'] },
+    s04: { name:'Internal Rotation with Band', cat:'shoulder', instructions:['Attach a resistance band at elbow height.','Stand sideways to the attachment point.','With elbow bent 90° at your side, rotate your forearm inward.','Slowly return to the starting position.'] },
+    s05: { name:'Scapular Squeezes', cat:'shoulder', instructions:['Sit or stand with arms at your sides.','Squeeze your shoulder blades together.','Hold the squeeze.','Slowly relax and repeat.'] },
+    s06: { name:'Shoulder Flexion Stretch', cat:'shoulder', instructions:['Stand in a doorway with your arm raised to shoulder height.','Place your forearm against the door frame.','Gently lean forward until you feel a stretch.','Hold, then relax.'] },
+    s07: { name:'Cross-body Stretch', cat:'shoulder', instructions:['Bring one arm across your chest.','Use the other hand to gently press above the elbow.','Hold the stretch.','You should feel a stretch in the back of your shoulder.'] },
+    s08: { name:'Sleeper Stretch', cat:'shoulder', instructions:['Lie on your affected side with your arm in front, elbow bent 90°.','Use your other hand to gently push your forearm toward the floor.','Hold the stretch.','You should feel a stretch in the back of your shoulder.'] },
+    s09: { name:'Prone Y Raise', cat:'shoulder', instructions:['Lie face down on a flat surface or bench.','Extend your arms overhead in a Y position, thumbs pointing up.','Lift your arms toward the ceiling.','Hold briefly, then lower slowly.'] },
+    s10: { name:'Prone T Raise', cat:'shoulder', instructions:['Lie face down on a flat surface or bench.','Extend your arms out to the sides in a T position, thumbs up.','Lift your arms toward the ceiling.','Hold briefly, then lower slowly.'] },
+
+    b01: { name:'Cat-Cow Stretch', cat:'back', instructions:['Start on your hands and knees.','Arch your back upward (cat), tucking your chin.','Then drop your belly toward the floor, lifting your head (cow).','Move slowly between the two positions.'] },
+    b02: { name:'Bird Dog', cat:'back', instructions:['Start on your hands and knees.','Extend one arm forward and the opposite leg backward.','Keep your back flat and core engaged.','Hold, then return to start and switch sides.'] },
+    b03: { name:'Pelvic Tilts', cat:'back', instructions:['Lie on your back with knees bent, feet flat on the floor.','Flatten your lower back against the floor by tightening your abs.','Hold the tilt.','Relax and repeat.'] },
+    b04: { name:'Bridges', cat:'back', instructions:['Lie on your back with knees bent, feet flat on the floor.','Lift your hips toward the ceiling, squeezing your glutes.','Hold at the top.','Slowly lower back down.'] },
+    b05: { name:'Knee-to-Chest Stretch', cat:'back', instructions:['Lie on your back with knees bent.','Bring one knee toward your chest, holding behind the thigh.','Hold the stretch.','Lower and repeat with the other leg.'] },
+    b06: { name:'Child\'s Pose', cat:'back', instructions:['Kneel on the floor, sitting back on your heels.','Reach your arms forward on the floor.','Lower your chest toward the ground.','Hold and breathe deeply.'] },
+    b07: { name:'Press Up (McKenzie)', cat:'back', instructions:['Lie face down with hands under your shoulders.','Slowly press your upper body up, keeping hips on the floor.','Hold at the top.','Slowly lower back down.'] },
+    b08: { name:'Dead Bug', cat:'back', instructions:['Lie on your back with arms extended toward ceiling, knees bent 90°.','Slowly lower one arm overhead while extending the opposite leg.','Keep your lower back pressed into the floor.','Return to start and switch sides.'] },
+    b09: { name:'Side Plank', cat:'back', instructions:['Lie on your side with your elbow under your shoulder.','Lift your hips off the ground, forming a straight line.','Hold the position.','Lower and repeat on the other side.'] },
+    b10: { name:'Seated Lumbar Rotation', cat:'back', instructions:['Sit in a chair with feet flat on the floor.','Cross your arms over your chest.','Slowly rotate your trunk to one side.','Hold, return to center, then rotate to the other side.'] },
+
+    h01: { name:'Clamshells', cat:'hip', instructions:['Lie on your side with knees bent and feet together.','Keeping feet together, lift your top knee as high as comfortable.','Hold briefly at the top.','Slowly lower back down.'] },
+    h02: { name:'Hip Flexor Stretch', cat:'hip', instructions:['Kneel on one knee with the other foot in front.','Push your hips forward gently.','You should feel a stretch in the front of your hip.','Hold, then switch sides.'] },
+    h03: { name:'Piriformis Stretch', cat:'hip', instructions:['Lie on your back with both knees bent.','Cross one ankle over the opposite knee.','Pull the uncrossed leg toward your chest.','Hold the stretch, then switch sides.'] },
+    h04: { name:'Side-lying Hip Abduction', cat:'hip', instructions:['Lie on your side with legs straight.','Lift your top leg toward the ceiling, keeping it straight.','Hold briefly at the top.','Slowly lower back down.'] },
+    h05: { name:'Hip Bridges', cat:'hip', instructions:['Lie on your back with knees bent, feet flat.','Squeeze your glutes and lift your hips.','Hold at the top.','Slowly lower back down.'] },
+    h06: { name:'Standing Hip Extension', cat:'hip', instructions:['Stand holding a chair for balance.','Keep your leg straight and kick it backward.','Squeeze your glute at the top.','Slowly return to starting position.'] },
+    h07: { name:'Fire Hydrants', cat:'hip', instructions:['Start on your hands and knees.','Keeping your knee bent, lift one leg out to the side.','Hold briefly at the top.','Slowly lower back down.'] },
+    h08: { name:'Figure-4 Stretch', cat:'hip', instructions:['Sit in a chair and cross one ankle over the opposite knee.','Gently lean forward, keeping your back straight.','You should feel a stretch in your hip and glute.','Hold, then switch sides.'] },
+    h09: { name:'Monster Walks', cat:'hip', instructions:['Place a resistance band around your ankles.','Stand in a slight squat position.','Walk sideways, keeping tension on the band.','Take 10 steps one way, then reverse.'] },
+    h10: { name:'Single Leg Deadlift', cat:'hip', instructions:['Stand on one leg with a slight knee bend.','Hinge forward at the hip, extending the other leg behind you.','Keep your back straight throughout.','Return to standing and repeat.'] },
+
+    n01: { name:'Chin Tucks', cat:'neck', instructions:['Sit or stand with good posture.','Gently draw your chin straight back, making a "double chin".','Hold the tucked position.','Relax and repeat.'] },
+    n02: { name:'Neck Flexion Stretch', cat:'neck', instructions:['Sit or stand with good posture.','Slowly lower your chin toward your chest.','You should feel a stretch along the back of your neck.','Hold, then slowly return to neutral.'] },
+    n03: { name:'Neck Side Bend', cat:'neck', instructions:['Sit or stand with good posture.','Slowly tilt your ear toward your shoulder.','Do not raise your shoulder.','Hold the stretch, then repeat on the other side.'] },
+    n04: { name:'Neck Rotation', cat:'neck', instructions:['Sit or stand with good posture.','Slowly turn your head to look over one shoulder.','Hold at end range.','Return to center and repeat to the other side.'] },
+    n05: { name:'Levator Scapulae Stretch', cat:'neck', instructions:['Sit and hold the bottom of your chair with one hand.','Tilt your head away and look down toward the opposite knee.','Use your free hand to gently increase the stretch.','Hold, then switch sides.'] },
+    n06: { name:'Upper Trap Stretch', cat:'neck', instructions:['Sit and hold the bottom of your chair with one hand.','Tilt your head directly to the opposite side.','Use your free hand to gently increase the stretch.','Hold, then switch sides.'] },
+    n07: { name:'Isometric Neck Flexion', cat:'neck', instructions:['Place your palm on your forehead.','Push your head forward into your hand without moving.','Hold the contraction.','Relax and repeat.'] },
+    n08: { name:'Isometric Neck Extension', cat:'neck', instructions:['Place your hands behind your head.','Push your head backward into your hands without moving.','Hold the contraction.','Relax and repeat.'] },
+    n09: { name:'Thoracic Extension', cat:'neck', instructions:['Sit in a chair with your hands behind your head.','Gently arch your upper back over the back of the chair.','Hold the stretch.','Return to starting position and repeat.'] },
+    n10: { name:'Scalene Stretch', cat:'neck', instructions:['Sit and hold the bottom of your chair with one hand.','Tilt your head to the opposite side and slightly back.','You should feel a stretch along the side of your neck.','Hold, then switch sides.'] },
+
+    a01: { name:'Ankle Pumps', cat:'ankle', instructions:['Sit or lie down with your leg extended.','Point your toes away from you (plantar flexion).','Then pull your toes toward you (dorsiflexion).','Repeat in a pumping motion.'] },
+    a02: { name:'Ankle Circles', cat:'ankle', instructions:['Sit or lie with your leg extended.','Slowly rotate your ankle in a circular motion.','Do several circles clockwise.','Then reverse direction.'] },
+    a03: { name:'Towel Stretch', cat:'ankle', instructions:['Sit with your leg straight in front of you.','Loop a towel around the ball of your foot.','Gently pull the towel toward you.','Hold the stretch.'] },
+    a04: { name:'Calf Raises (Ankle)', cat:'ankle', instructions:['Stand with feet hip-width apart near a wall.','Rise up onto your toes as high as possible.','Hold briefly at the top.','Slowly lower back down.'] },
+    a05: { name:'Single Leg Balance (Ankle)', cat:'ankle', instructions:['Stand on your affected foot near a wall for safety.','Try to balance without holding on.','Keep your knee slightly bent.','Hold for the prescribed time.'] },
+    a06: { name:'Resistance Band Eversion', cat:'ankle', instructions:['Sit with a resistance band around your forefoot, anchored to the inside.','Turn your foot outward against the band resistance.','Hold briefly.','Slowly return and repeat.'] },
+    a07: { name:'Resistance Band Inversion', cat:'ankle', instructions:['Sit with a resistance band around your forefoot, anchored to the outside.','Turn your foot inward against the band resistance.','Hold briefly.','Slowly return and repeat.'] },
+    a08: { name:'Heel Walks', cat:'ankle', instructions:['Stand with feet hip-width apart.','Lift your toes off the ground, walking on your heels.','Take 20 steps forward.','Maintain good posture throughout.'] },
+    a09: { name:'Toe Walks', cat:'ankle', instructions:['Stand with feet hip-width apart.','Rise up onto your toes.','Walk forward on your toes for 20 steps.','Maintain good posture throughout.'] },
+    a10: { name:'BOSU Ball Balance', cat:'ankle', instructions:['Stand on a BOSU ball with one or both feet.','Try to maintain your balance.','Start with both feet, progress to single leg.','Use a wall nearby for safety.'] }
+};
+
+var CAT_LABELS = { knee:'Knee', shoulder:'Shoulder', back:'Back', hip:'Hip', neck:'Neck', ankle:'Ankle' };
+
+function parseURL() {
+    var params = new URLSearchParams(window.location.search);
+    var exParam = params.get('ex');
+    if (!exParam) return [];
+
+    var items = exParam.split(',');
+    var result = [];
+
+    for (var i = 0; i < items.length; i++) {
+        var item = items[i].trim();
+        var code, sets = 3, reps = 10, hold = 0, freq = 'daily';
+
+        // Parse format: k01:3x10h5.2x-daily  or just  k01
+        var parts = item.split('.');
+        if (parts.length > 1) freq = parts[1];
+
+        var main = parts[0].split(':');
+        code = main[0];
+
+        if (main.length > 1) {
+            var prescription = main[1];
+            var xMatch = prescription.match(/(\d+)x(\d+)/);
+            if (xMatch) { sets = parseInt(xMatch[1]); reps = parseInt(xMatch[2]); }
+            var hMatch = prescription.match(/h(\d+)/);
+            if (hMatch) hold = parseInt(hMatch[1]);
+        }
+
+        if (EXERCISES[code]) {
+            result.push({ code:code, sets:sets, reps:reps, hold:hold, freq:freq });
+        }
+    }
+    return result;
+}
+
+function render() {
+    var exercises = parseURL();
+    var container = document.getElementById('content');
+
+    if (exercises.length === 0) {
+        container.innerHTML = '<div class="error"><h2>No exercises found</h2><p>Please scan a valid QR code from your physiotherapist.</p></div>';
+        return;
+    }
+
+    var html = '';
+    var freqLabels = { 'daily':'Daily', '2x-daily':'2x Daily', '3x-week':'3x per Week', 'alternate':'Alternate Days' };
+
+    for (var i = 0; i < exercises.length; i++) {
+        var ex = exercises[i];
+        var data = EXERCISES[ex.code];
+
+        html += '<div class="exercise-card">';
+        html += '<span class="category cat-' + data.cat + '">' + CAT_LABELS[data.cat] + '</span>';
+        html += '<h2>' + (i+1) + '. ' + data.name + '</h2>';
+
+        html += '<div class="params">';
+        html += '<div class="param"><div class="value">' + ex.sets + '</div><div class="label">Sets</div></div>';
+        html += '<div class="param"><div class="value">' + ex.reps + '</div><div class="label">Reps</div></div>';
+        if (ex.hold > 0) html += '<div class="param"><div class="value">' + ex.hold + 's</div><div class="label">Hold</div></div>';
+        html += '<div class="param"><div class="value">' + (freqLabels[ex.freq] || ex.freq) + '</div><div class="label">Frequency</div></div>';
+        html += '</div>';
+
+        html += '<div class="instructions"><strong>How to do it:</strong><ol>';
+        for (var j = 0; j < data.instructions.length; j++) {
+            html += '<li>' + data.instructions[j] + '</li>';
+        }
+        html += '</ol></div>';
+        html += '</div>';
+    }
+
+    container.innerHTML = html;
+}
+
+render();
+</script>
 </body>
 </html>
