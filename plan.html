@@ -38,6 +38,73 @@
         .error h2 { color: #c0392b; }
         .error p { color: #e74c3c; font-size: 14px; }
         .footer { text-align: center; padding: 20px; color: #999; font-size: 13px; border-top: 1px solid #ddd; margin-top: 20px; }
+
+        /* ---- Video styles ---- */
+        .video-section { margin: 12px 0; }
+        .video-thumbnail {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            background: #000;
+        }
+        .video-thumbnail img {
+            width: 100%;
+            display: block;
+        }
+        .play-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 56px;
+            height: 56px;
+            background: rgba(0,0,0,0.55);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 22px;
+            padding-left: 3px;
+            transition: background 0.2s;
+        }
+        .video-thumbnail:hover .play-overlay {
+            background: rgba(44,125,186,0.85);
+        }
+        .video-player {
+            display: none;
+        }
+        .video-player-inner {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #000;
+        }
+        .video-player-inner iframe {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            border: none;
+        }
+        .video-btn {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 6px 16px;
+            background: #f0f4f8;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            font-size: 13px;
+            color: #2c7dba;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+        .video-btn:hover {
+            background: #e0e8f0;
+        }
     </style>
 </head>
 <body>
@@ -56,18 +123,35 @@
 </div>
 
 <script>
-var EXERCISES = {
-    k01: { name:'Quad Sets', cat:'knee', instructions:['Sit with your leg straight on a flat surface.','Tighten the muscle on top of your thigh by pushing your knee down.','Hold the squeeze, then relax.','Repeat as prescribed.'] },
-    k02: { name:'Straight Leg Raise', cat:'knee', instructions:['Lie on your back with one knee bent and the other straight.','Tighten the thigh of the straight leg.','Lift the straight leg about 30cm off the ground.','Hold briefly, then slowly lower.'] },
-    k03: { name:'Heel Slides', cat:'knee', instructions:['Lie on your back with legs straight.','Slowly bend one knee, sliding your heel toward your buttock.','Slide back to the starting position.','Keep the movement smooth and controlled.'] },
-    k04: { name:'Wall Squats', cat:'knee', instructions:['Stand with your back against a wall, feet shoulder-width apart.','Slowly slide down the wall, bending your knees.','Hold the squat position.','Slowly slide back up.'] },
-    k05: { name:'Step Ups', cat:'knee', instructions:['Stand in front of a step or low platform.','Step up with one foot, then bring the other foot up.','Step back down leading with the same foot.','Alternate the leading leg.'] },
-    k06: { name:'Terminal Knee Extension', cat:'knee', instructions:['Place a rolled towel under your knee while lying down.','Straighten your knee by lifting your foot off the surface.','Hold at full extension.','Slowly lower back down.'] },
-    k07: { name:'Hamstring Curls', cat:'knee', instructions:['Stand holding a chair for balance.','Slowly bend one knee, bringing your heel toward your buttock.','Hold briefly at the top.','Slowly lower back down.'] },
-    k08: { name:'Calf Raises', cat:'knee', instructions:['Stand with feet hip-width apart, holding a chair for balance.','Rise up onto your toes as high as possible.','Hold briefly at the top.','Slowly lower back down.'] },
-    k09: { name:'Single Leg Balance', cat:'knee', instructions:['Stand on one leg near a wall or chair for safety.','Try to maintain balance without holding on.','Keep your standing knee slightly bent.','Hold for the prescribed time, then switch legs.'] },
-    k10: { name:'Lateral Step Downs', cat:'knee', instructions:['Stand on a step with one foot near the edge.','Slowly lower the other foot toward the ground by bending the standing knee.','Lightly tap the ground, then return to starting position.','Keep your knee aligned over your toes.'] },
+/*
+ * ======================================================
+ *  HOW TO ADD A YOUTUBE VIDEO
+ * ======================================================
+ *  Paste ANY YouTube link format into the video field:
+ *
+ *    video:'https://www.youtube.com/watch?v=IF5eDfb8afM'
+ *    video:'https://youtu.be/IF5eDfb8afM'
+ *    video:'https://m.youtube.com/watch?v=IF5eDfb8afM&si=abc'
+ *    video:'IF5eDfb8afM'            (just the ID also works)
+ *
+ *  Leave as 'PASTE_YOUTUBE_LINK_HERE' to hide the video.
+ * ======================================================
+ */
 
+var EXERCISES = {
+    // ──── KNEE (with video support) ────
+    k01: { name:'Quad Sets', cat:'knee', video:'https://youtu.be/IF5eDfb8afM?si=n-5cdySZiLPLtQgv', instructions:['Sit with your leg straight on a flat surface.','Tighten the muscle on top of your thigh by pushing your knee down.','Hold the squeeze, then relax.','Repeat as prescribed.'] },
+    k02: { name:'Straight Leg Raise', cat:'knee', video:'PASTE_YOUTUBE_LINK_HERE', instructions:['Lie on your back with one knee bent and the other straight.','Tighten the thigh of the straight leg.','Lift the straight leg about 30cm off the ground.','Hold briefly, then slowly lower.'] },
+    k03: { name:'Heel Slides', cat:'knee', video:'PASTE_YOUTUBE_LINK_HERE', instructions:['Lie on your back with legs straight.','Slowly bend one knee, sliding your heel toward your buttock.','Slide back to the starting position.','Keep the movement smooth and controlled.'] },
+    k04: { name:'Wall Squats', cat:'knee', video:'PASTE_YOUTUBE_LINK_HERE', instructions:['Stand with your back against a wall, feet shoulder-width apart.','Slowly slide down the wall, bending your knees.','Hold the squat position.','Slowly slide back up.'] },
+    k05: { name:'Step Ups', cat:'knee', video:'PASTE_YOUTUBE_LINK_HERE', instructions:['Stand in front of a step or low platform.','Step up with one foot, then bring the other foot up.','Step back down leading with the same foot.','Alternate the leading leg.'] },
+    k06: { name:'Terminal Knee Extension', cat:'knee', video:'PASTE_YOUTUBE_LINK_HERE', instructions:['Place a rolled towel under your knee while lying down.','Straighten your knee by lifting your foot off the surface.','Hold at full extension.','Slowly lower back down.'] },
+    k07: { name:'Hamstring Curls', cat:'knee', video:'PASTE_YOUTUBE_LINK_HERE', instructions:['Stand holding a chair for balance.','Slowly bend one knee, bringing your heel toward your buttock.','Hold briefly at the top.','Slowly lower back down.'] },
+    k08: { name:'Calf Raises', cat:'knee', video:'PASTE_YOUTUBE_LINK_HERE', instructions:['Stand with feet hip-width apart, holding a chair for balance.','Rise up onto your toes as high as possible.','Hold briefly at the top.','Slowly lower back down.'] },
+    k09: { name:'Single Leg Balance', cat:'knee', video:'PASTE_YOUTUBE_LINK_HERE', instructions:['Stand on one leg near a wall or chair for safety.','Try to maintain balance without holding on.','Keep your standing knee slightly bent.','Hold for the prescribed time, then switch legs.'] },
+    k10: { name:'Lateral Step Downs', cat:'knee', video:'PASTE_YOUTUBE_LINK_HERE', instructions:['Stand on a step with one foot near the edge.','Slowly lower the other foot toward the ground by bending the standing knee.','Lightly tap the ground, then return to starting position.','Keep your knee aligned over your toes.'] },
+
+    // ──── SHOULDER ────
     s01: { name:'Pendulum Exercises', cat:'shoulder', instructions:['Lean forward supporting yourself with one hand on a table.','Let your affected arm hang straight down.','Gently swing your arm in small circles.','Gradually increase the circle size as comfort allows.'] },
     s02: { name:'Wall Walks', cat:'shoulder', instructions:['Stand facing a wall at arm\'s length.','Place your fingertips on the wall at waist height.','Slowly walk your fingers up the wall as high as comfortable.','Slowly walk your fingers back down.'] },
     s03: { name:'External Rotation with Band', cat:'shoulder', instructions:['Hold a resistance band with both hands, elbows at your sides bent to 90°.','Keep your elbows tucked in.','Rotate your forearms outward, stretching the band.','Slowly return to the starting position.'] },
@@ -79,6 +163,7 @@ var EXERCISES = {
     s09: { name:'Prone Y Raise', cat:'shoulder', instructions:['Lie face down on a flat surface or bench.','Extend your arms overhead in a Y position, thumbs pointing up.','Lift your arms toward the ceiling.','Hold briefly, then lower slowly.'] },
     s10: { name:'Prone T Raise', cat:'shoulder', instructions:['Lie face down on a flat surface or bench.','Extend your arms out to the sides in a T position, thumbs up.','Lift your arms toward the ceiling.','Hold briefly, then lower slowly.'] },
 
+    // ──── BACK ────
     b01: { name:'Cat-Cow Stretch', cat:'back', instructions:['Start on your hands and knees.','Arch your back upward (cat), tucking your chin.','Then drop your belly toward the floor, lifting your head (cow).','Move slowly between the two positions.'] },
     b02: { name:'Bird Dog', cat:'back', instructions:['Start on your hands and knees.','Extend one arm forward and the opposite leg backward.','Keep your back flat and core engaged.','Hold, then return to start and switch sides.'] },
     b03: { name:'Pelvic Tilts', cat:'back', instructions:['Lie on your back with knees bent, feet flat on the floor.','Flatten your lower back against the floor by tightening your abs.','Hold the tilt.','Relax and repeat.'] },
@@ -90,6 +175,7 @@ var EXERCISES = {
     b09: { name:'Side Plank', cat:'back', instructions:['Lie on your side with your elbow under your shoulder.','Lift your hips off the ground, forming a straight line.','Hold the position.','Lower and repeat on the other side.'] },
     b10: { name:'Seated Lumbar Rotation', cat:'back', instructions:['Sit in a chair with feet flat on the floor.','Cross your arms over your chest.','Slowly rotate your trunk to one side.','Hold, return to center, then rotate to the other side.'] },
 
+    // ──── HIP ────
     h01: { name:'Clamshells', cat:'hip', instructions:['Lie on your side with knees bent and feet together.','Keeping feet together, lift your top knee as high as comfortable.','Hold briefly at the top.','Slowly lower back down.'] },
     h02: { name:'Hip Flexor Stretch', cat:'hip', instructions:['Kneel on one knee with the other foot in front.','Push your hips forward gently.','You should feel a stretch in the front of your hip.','Hold, then switch sides.'] },
     h03: { name:'Piriformis Stretch', cat:'hip', instructions:['Lie on your back with both knees bent.','Cross one ankle over the opposite knee.','Pull the uncrossed leg toward your chest.','Hold the stretch, then switch sides.'] },
@@ -101,6 +187,7 @@ var EXERCISES = {
     h09: { name:'Monster Walks', cat:'hip', instructions:['Place a resistance band around your ankles.','Stand in a slight squat position.','Walk sideways, keeping tension on the band.','Take 10 steps one way, then reverse.'] },
     h10: { name:'Single Leg Deadlift', cat:'hip', instructions:['Stand on one leg with a slight knee bend.','Hinge forward at the hip, extending the other leg behind you.','Keep your back straight throughout.','Return to standing and repeat.'] },
 
+    // ──── NECK ────
     n01: { name:'Chin Tucks', cat:'neck', instructions:['Sit or stand with good posture.','Gently draw your chin straight back, making a "double chin".','Hold the tucked position.','Relax and repeat.'] },
     n02: { name:'Neck Flexion Stretch', cat:'neck', instructions:['Sit or stand with good posture.','Slowly lower your chin toward your chest.','You should feel a stretch along the back of your neck.','Hold, then slowly return to neutral.'] },
     n03: { name:'Neck Side Bend', cat:'neck', instructions:['Sit or stand with good posture.','Slowly tilt your ear toward your shoulder.','Do not raise your shoulder.','Hold the stretch, then repeat on the other side.'] },
@@ -112,6 +199,7 @@ var EXERCISES = {
     n09: { name:'Thoracic Extension', cat:'neck', instructions:['Sit in a chair with your hands behind your head.','Gently arch your upper back over the back of the chair.','Hold the stretch.','Return to starting position and repeat.'] },
     n10: { name:'Scalene Stretch', cat:'neck', instructions:['Sit and hold the bottom of your chair with one hand.','Tilt your head to the opposite side and slightly back.','You should feel a stretch along the side of your neck.','Hold, then switch sides.'] },
 
+    // ──── ANKLE ────
     a01: { name:'Ankle Pumps', cat:'ankle', instructions:['Sit or lie down with your leg extended.','Point your toes away from you (plantar flexion).','Then pull your toes toward you (dorsiflexion).','Repeat in a pumping motion.'] },
     a02: { name:'Ankle Circles', cat:'ankle', instructions:['Sit or lie with your leg extended.','Slowly rotate your ankle in a circular motion.','Do several circles clockwise.','Then reverse direction.'] },
     a03: { name:'Towel Stretch', cat:'ankle', instructions:['Sit with your leg straight in front of you.','Loop a towel around the ball of your foot.','Gently pull the towel toward you.','Hold the stretch.'] },
@@ -126,6 +214,36 @@ var EXERCISES = {
 
 var CAT_LABELS = { knee:'Knee', shoulder:'Shoulder', back:'Back', hip:'Hip', neck:'Neck', ankle:'Ankle' };
 
+/*
+ * Extracts the YouTube video ID from any URL format:
+ *   https://www.youtube.com/watch?v=ID
+ *   https://m.youtube.com/watch?v=ID&si=...
+ *   https://youtu.be/ID
+ *   https://youtu.be/ID?si=...
+ *   or just the raw ID itself
+ */
+function extractYouTubeID(input) {
+    if (!input) return null;
+    input = input.trim();
+
+    /* youtu.be/ID  or  youtu.be/ID?si=... */
+    var shortMatch = input.match(/youtu\.be\/([A-Za-z0-9_-]{11})/);
+    if (shortMatch) return shortMatch[1];
+
+    /* youtube.com/watch?...v=ID... */
+    var longMatch = input.match(/[?&]v=([A-Za-z0-9_-]{11})/);
+    if (longMatch) return longMatch[1];
+
+    /* youtube.com/embed/ID */
+    var embedMatch = input.match(/youtube\.com\/embed\/([A-Za-z0-9_-]{11})/);
+    if (embedMatch) return embedMatch[1];
+
+    /* Already a raw 11-char ID */
+    if (/^[A-Za-z0-9_-]{11}$/.test(input)) return input;
+
+    return null;
+}
+
 function parseURL() {
     var params = new URLSearchParams(window.location.search);
     var exParam = params.get('ex');
@@ -138,7 +256,6 @@ function parseURL() {
         var item = items[i].trim();
         var code, sets = 3, reps = 10, hold = 0, freq = 'daily';
 
-        // Parse format: k01:3x10h5.2x-daily  or just  k01
         var parts = item.split('.');
         if (parts.length > 1) freq = parts[1];
 
@@ -160,6 +277,26 @@ function parseURL() {
     return result;
 }
 
+/* ── Video toggle ── */
+function toggleVideo(code, videoId) {
+    var section = document.getElementById('vid-' + code);
+    var thumb = section.querySelector('.video-thumbnail');
+    var player = section.querySelector('.video-player');
+    var btn = section.querySelector('.video-btn');
+
+    if (player.style.display === 'none' || player.style.display === '') {
+        thumb.style.display = 'none';
+        player.style.display = 'block';
+        player.innerHTML = '<div class="video-player-inner"><iframe src="https://www.youtube.com/embed/' + videoId + '?rel=0&autoplay=1" allow="autoplay" allowfullscreen loading="lazy"></iframe></div>';
+        btn.textContent = '\u2715  Hide Video';
+    } else {
+        player.style.display = 'none';
+        player.innerHTML = '';
+        thumb.style.display = 'block';
+        btn.textContent = '\u25B6  Watch Video';
+    }
+}
+
 function render() {
     var exercises = parseURL();
     var container = document.getElementById('content');
@@ -175,6 +312,7 @@ function render() {
     for (var i = 0; i < exercises.length; i++) {
         var ex = exercises[i];
         var data = EXERCISES[ex.code];
+        var videoId = data.video ? extractYouTubeID(data.video) : null;
 
         html += '<div class="exercise-card">';
         html += '<span class="category cat-' + data.cat + '">' + CAT_LABELS[data.cat] + '</span>';
@@ -186,6 +324,18 @@ function render() {
         if (ex.hold > 0) html += '<div class="param"><div class="value">' + ex.hold + 's</div><div class="label">Hold</div></div>';
         html += '<div class="param"><div class="value">' + (freqLabels[ex.freq] || ex.freq) + '</div><div class="label">Frequency</div></div>';
         html += '</div>';
+
+        /* ── Video section (only if a valid YouTube ID is resolved) ── */
+        if (videoId) {
+            html += '<div class="video-section" id="vid-' + ex.code + '">';
+            html += '<div class="video-thumbnail" onclick="toggleVideo(\'' + ex.code + '\',\'' + videoId + '\')">';
+            html += '<img src="https://img.youtube.com/vi/' + videoId + '/hqdefault.jpg" alt="Video thumbnail">';
+            html += '<div class="play-overlay">\u25B6</div>';
+            html += '</div>';
+            html += '<div class="video-player"></div>';
+            html += '<button class="video-btn" onclick="toggleVideo(\'' + ex.code + '\',\'' + videoId + '\')">\u25B6  Watch Video</button>';
+            html += '</div>';
+        }
 
         html += '<div class="instructions"><strong>How to do it:</strong><ol>';
         for (var j = 0; j < data.instructions.length; j++) {
