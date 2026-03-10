@@ -1,0 +1,175 @@
+/* ============================================================
+   PHYSIOTHERAPY EXERCISE PLAN — PATIENT STYLES
+   Mobile-first, accessible, no external dependencies
+   ============================================================ */
+
+/* ---------- RESET & BASE ---------- */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 16px;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                 Oxygen, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f5f7fa;
+}
+
+/* ---------- LAYOUT ---------- */
+.container {
+    width: 100%;
+    max-width: 48rem;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+/* ---------- HEADER ---------- */
+.site-header {
+    background: linear-gradient(135deg, #0077b6, #00b4d8);
+    color: #fff;
+    text-align: center;
+    padding: 1.5rem 1rem;
+}
+
+.site-header h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.site-header .subtitle {
+    font-size: 0.95rem;
+    opacity: 0.9;
+    margin-top: 0.25rem;
+}
+
+/* ---------- MESSAGE BOXES ---------- */
+.message-box {
+    background: #fff;
+    border-radius: 0.5rem;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    margin: 2rem 0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.message-box.warning {
+    border-left: 4px solid #e6a817;
+    text-align: left;
+    padding: 1rem 1.25rem;
+    font-size: 0.9rem;
+    color: #6b5900;
+    background: #fff9e6;
+}
+
+.message-box.error {
+    border-left: 4px solid #d32f2f;
+    color: #b71c1c;
+    background: #fdecea;
+    text-align: left;
+    padding: 1rem 1.25rem;
+}
+
+/* ---------- EXERCISE CARD ---------- */
+.exercise-card {
+    background: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+}
+
+.exercise-card__header {
+    background: #0077b6;
+    color: #fff;
+    padding: 0.75rem 1rem;
+}
+
+.exercise-card__title {
+    font-size: 1.15rem;
+    font-weight: 600;
+}
+
+.exercise-card__meta {
+    font-size: 0.8rem;
+    opacity: 0.85;
+    margin-top: 0.15rem;
+}
+
+.exercise-card__body {
+    padding: 1rem;
+}
+
+/* Media (video / image) */
+.exercise-card__media {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.exercise-card__media video,
+.exercise-card__media img {
+    display: block;
+    width: 100%;
+    max-height: 20rem;
+    object-fit: contain;
+    background: #e9ecef;
+    border-radius: 0.25rem;
+}
+
+/* Instructions */
+.exercise-card__instructions {
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+    line-height: 1.7;
+}
+
+/* Dosage badges */
+.exercise-card__dosage {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.dosage-badge {
+    display: inline-flex;
+    align-items: center;
+    background: #e8f5e9;
+    color: #2e7d32;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 0.35rem 0.75rem;
+    border-radius: 2rem;
+}
+
+.dosage-badge__label {
+    font-weight: 400;
+    margin-right: 0.3rem;
+    color: #555;
+}
+
+/* ---------- FOOTER ---------- */
+.site-footer {
+    text-align: center;
+    padding: 1.5rem 1rem;
+    font-size: 0.85rem;
+    color: #777;
+    border-top: 1px solid #ddd;
+    margin-top: 1rem;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (min-width: 600px) {
+    .site-header h1 {
+        font-size: 1.8rem;
+    }
+    .container {
+        padding: 1.5rem;
+    }
+}
